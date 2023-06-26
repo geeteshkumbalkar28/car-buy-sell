@@ -21,6 +21,6 @@ public interface CarRepo extends JpaRepository<Car,Integer> {
 //    @Query(value = "DELETE FROM buysellcar.dealer_profile WHERE dealer_id=:dealer_id", nativeQuery = true)
 //    public void DeleteById(int dealer_id);
 //    @Modifying
-    @Query(value = "select * from buysellcar.car where price > :minPrice and price < :maxPrice and area = :area and year = :year and brand = :brand and model = :model and transmission = :transmission and fuelType = :fuelType",nativeQuery = true)
-    Optional<List<Car>> findByCarFilter(int minPrice,int maxPrice,String area,int year,String brand,String model,String transmission,String fuelType);
+    @Query("SELECT c FROM Car c WHERE c.price > :minPrice AND c.price < :maxPrice AND c.area = :area AND c.year = :year AND c.brand = :brand AND c.model = :model AND c.transmission = :transmission AND c.fuelType = :fuelType")
+    Optional<List<Car>> findCarsByParameters(@Param("minPrice") int minPrice, @Param("maxPrice") int maxPrice, @Param("area") String area, @Param("year") int year, @Param("brand") String brand, @Param("model") String model, @Param("transmission") String transmission, @Param("fuelType") String fuelType);
 }
