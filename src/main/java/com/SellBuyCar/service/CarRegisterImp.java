@@ -153,7 +153,7 @@ public class CarRegisterImp implements ICarRegister {
     @Override
     public List<CarDto> searchByFilter(FilterDto filterDto,int pageNo) {
         List<Car> listOfCar =carRepo.findCarsByParameters(filterDto.getMinPrice(),filterDto.getMaxPrice(),filterDto.getArea(),filterDto.getYear(),filterDto.getBrand(),filterDto.getModel(),filterDto.getTransmission(),filterDto.getFuelType()).orElseThrow(()->new CarNotFoundException("car not found"));
-
+        System.err.println("Filter **********"+filterDto.toString());
         System.out.println("list of de"+listOfCar.size());
         List<CarDto> listOfCarDto = new ArrayList<>();
 //        System.out.println("2");
