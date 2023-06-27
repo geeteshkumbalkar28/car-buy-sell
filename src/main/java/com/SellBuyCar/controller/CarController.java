@@ -3,6 +3,7 @@ package com.SellBuyCar.controller;
 
 import com.SellBuyCar.Interface.ICarRegister;
 import com.SellBuyCar.dto.CarDto;
+import com.SellBuyCar.dto.FilterDto;
 import com.SellBuyCar.dto.ResponceCarDto;
 import com.SellBuyCar.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,13 @@ public class CarController {
         Optional<List<Car>> cars = iCarRegister.FindByArea(area);
         System.out.println("00");
 //        System.out.println(cars.get().get(0).getArea());
-//        
+
         return ResponseEntity.ok(cars.get());
+    }
+
+    @GetMapping("/mainFilter/{pageNo}")
+    public List<CarDto> searchByFilter(@RequestBody FilterDto filterDto,@PathVariable int pageNo){
+        return iCarRegister.searchByFilter(filterDto,pageNo);
     }
 
 }

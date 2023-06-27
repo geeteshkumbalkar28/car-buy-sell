@@ -3,6 +3,7 @@ package com.SellBuyCar.service;
 
 import com.SellBuyCar.Interface.ICarRegister;
 import com.SellBuyCar.dto.CarDto;
+import com.SellBuyCar.dto.FilterDto;
 import com.SellBuyCar.dto.ResponceCarDto;
 import com.SellBuyCar.exception.CarNotFoundException;
 import com.SellBuyCar.exception.DealerNotFoundException;
@@ -58,10 +59,9 @@ public class CarRegisterImp implements ICarRegister {
     public String editCarDetails(CarDto carDto, int id) {
         System.err.println(carDto.getCarStatus()+""+id);
         Car car = carRepo.findById(id).orElseThrow(()->new CarNotFoundException("car not found"));
-        System.err.println(car.toString());
+//        System.err.println(car.toString());
 
-        List<Car> FilterInput =carRepo.findByCarFilter(5000,20000,carDto.getArea(),carDto.getYear(),carDto.getBrand(),carDto.getModel(),carDto.getTransmission(),carDto.getFuelType()).orElseThrow(()->new CarNotFoundException("car not found"));
-        System.err.println("11"+FilterInput.toString());
+
             System.err.println();
         car.setAcFeature(carDto.getAcFeature());
         car.setMusicFeature(carDto.getMusicFeature());
@@ -148,5 +148,37 @@ public class CarRegisterImp implements ICarRegister {
 //        System.out.println("11");
 //        return carRepo.FindByArea(area);
         return cars;
+    }
+
+    @Override
+    public List<CarDto> searchByFilter(FilterDto filterDto,int pageNo) {
+        List<Car> listOfCar =carRepo.findCarsByParameters(filterDto.getMinPrice(),filterDto.getMaxPrice(),filterDto.getArea(),filterDto.getYear(),filterDto.getBrand(),filterDto.getModel(),filterDto.getTransmission(),filterDto.getFuelType()).orElseThrow(()->new CarNotFoundException("car not found"));
+        System.err.println("Filter **********"+filterDto.toString());
+        System.out.println("list of de"+listOfCar.size());
+        List<CarDto> listOfCarDto = new ArrayList<>();
+//        System.out.println("2");
+        int pageStart=pageNo*10;
+        int pageEnd=pageStart+10;
+        int diff=(listOfCar.size()) - pageStart;
+        if(diff ==0){
+            return listOfCarDto;
+        }
+//        for(int counter=pageNo*10;counter<(pageNo*10)+10;counter++){
+        for(int counter=pageStart,i=1;counter<pageEnd;counter++,i++){
+            if(pageStart>listOfCar.size()){break;}
+
+            System.out.println("*");
+            CarDto carDto = new CarDto(listOfCar.get(counter));
+//            System.out.println(responseDealerDto.toString());
+            listOfCarDto.add(carDto);
+//            System.out.println(listOfDealerDto.size());
+            if(diff == i){
+                break;
+            }
+        }
+//                   ResponseDealerDto responseDealerDto = new ResponseDealerDto(listOfDealer.get(1));
+
+        System.out.println(listOfCar);
+        return listOfCarDto;
     }
 }

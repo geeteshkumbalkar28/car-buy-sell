@@ -2,6 +2,7 @@ package com.SellBuyCar.Interface;
 
 
 import com.SellBuyCar.dto.CarDto;
+import com.SellBuyCar.dto.FilterDto;
 import com.SellBuyCar.dto.ResponceCarDto;
 import com.SellBuyCar.model.Car;
 
@@ -20,4 +21,5 @@ public interface ICarRegister {
     public Optional<List<Car>> FindByArea(String area);
 
 
+    public List<CarDto> searchByFilter(FilterDto filterDto,int pageNo);
 }
